@@ -1,10 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Pie Chart</title>
+    <title>Real Count PilPres 2024</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 20px;
+            
+        }
+
+        h1 {
+            color: #563ceb;
+        }
+
+        canvas {
+            text-align: center;
+        }
+     </style>   
+    <h1>Data Pemilu 2024</h1>
     <canvas id="myChart" width="400" height="400"></canvas>
     <script>
         var ctx = document.getElementById('myChart').getContext('2d');
@@ -14,7 +31,7 @@
                 labels: ['H. ANIES RASYID', 'H. PRABOWO SUBIANTO', 'H. GANJAR PRANOWO,'],
                 datasets: [{
                     label: '# of Votes',
-                    data: [51830, 63886, 13770],
+                    data: [66323, 83600, 18176],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
