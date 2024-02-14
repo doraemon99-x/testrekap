@@ -2,14 +2,16 @@
 <html>
 <head>
     <title>Real Count PilPres 2024</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #1a1919;
             margin: 20px;
+            text-align: center;
             
         }
 
@@ -17,11 +19,9 @@
             color: #563ceb;
         }
 
-        canvas {
-            text-align: center;
-        }
+        
      </style>   
-    <h1>Data Pemilu 2024</h1>
+    <h1>Real Count PilPres 2024</h1>
     <canvas id="myChart" width="400" height="400"></canvas>
     <script>
         var ctx = document.getElementById('myChart').getContext('2d');
@@ -46,7 +46,7 @@
                 }]
             },
             options: {
-                responsive: false,
+                responsive: true,
             }
         });
     </script>
