@@ -18,10 +18,8 @@ if response.status_code == 200:
     # Buat diagram pie
     fig = go.Figure(data=[go.Pie(labels=labels, values=values)])
     
-    # Render diagram sebagai HTML
-    pie_chart_html = fig.to_html(full_html=False)
-    
-    # Tampilkan HTML
-    print(pie_chart_html)
+    # Tulis diagram sebagai HTML ke file
+    fig.write_html("file.html")
 else:
     print("Gagal mendapatkan data dari URL.")
+
