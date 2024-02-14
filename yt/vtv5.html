@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HLS.js Video Player</title>
+    <!-- Include HLS.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+<body>
+
+<div id="video-container">
+    <video id="video" controls></video>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var video = document.getElementById('video');
+        var videoContainer = document.getElementById('video-container');
+
+        if (Hls.isSupported()) {
+            var hls = new Hls();
+            hls.loadSource('https://tipicorss.fly.dev/https://mlbb.tipikuy.workers.dev/stream/_EJlCpO7Xts/master.m3u8'); // Ganti dengan URL HLS stream Anda
+            hls.attachMedia(video);
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+            video.src = 'https://tipicorss.fly.dev/https://mlbb.tipikuy.workers.dev/stream/_EJlCpO7Xts/master.m3u8'; // Ganti dengan URL HLS stream Anda
+        }
+
+        video.addEventListener('fullscreenchange', function () {
+            if (document.fullscreenElement) {
+                videoContainer.style.width = '100%';
+                videoContainer.style.height = '100%';
+            } else {
+                videoContainer.style.width = 'auto';
+                videoContainer.style.height = 'auto';
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

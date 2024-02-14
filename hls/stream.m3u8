@@ -1,0 +1,8 @@
+#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-STREAM-INF:BANDWIDTH=1908456,CODECS="avc1.64001f,mp4a.40.2",RESOLUTION=852x480
+https://ec02-pop1-hlc.tv360.vn/bpk-token/ha754jx6hljsmxra7yqtsp66ey4d7xrg/bpk-tv/194/output/194-audio_133600_eng=131600-video=1752000.m3u8
+##https://live-ali2.tv360.vn/manifest/VTV6_HD/playlist_1080p2M.m3u8?timestamp=1705690512&token=8a9f67167aa08d2644cac95399f5a468&uid=222719074
+##https://vtv-live-push-token.akamaized.net/hls/live/2029311/vtv5/vtv5-360p/hdntl=exp=1705515228~acl=%2f*~data=hdntl~hmac=ea1239106b371fbb0208ea40130ebfe0b07795d63f83ba276e6c0f4dba2c905e/chunklist.m3u8
+##https://hls.streambtw.com/live/stream_2.m3u8
+#https://hls.streambtw.com/live/stream_1.m3u8

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Pemilu 2024</title>
+</head>
+<body>
+    <h1>Data Pemilu 2024</h1>
+    <div id="pemilu-data"></div>
+
+    <script>
+        // Mengambil data dari URL JSON
+        const apiUrl = 'https://sirekap-obj-data.kpu.go.id/pemilu/ppwp.json';
+
+        // Mengambil data dari server
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                const pemiluData = document.querySelector('#pemilu-data');
+                pemiluData.innerHTML = ''; // Menghapus data sebelum memasukkan yang baru
+
+                // Memasukkan data ke dalam elemen HTML
+                data.forEach(entry => {
+                    const provinceName = entry.nama;
+                    const progress = entry.Progress;
+
+                    const provinceElement = document.createElement('p');
+                    provinceElement.textContent = `${provinceName}: ${progress}`;
+                    pemiluData.appendChild(provinceElement);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    </script>
+</body>
+</html>

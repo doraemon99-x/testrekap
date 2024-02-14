@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Pemilu 2024</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #563ceb;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #941b1b;
+            color: #f0eff5;
+            text-align: center;
+        }
+
+        tbody tr:hover {
+            background-color: #c4c0c0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Data Pemilu 2024</h1>
+    <table id="pemilu-table">
+        <thead>
+            <tr>
+                <th>Provinsi</th>
+                <th>Progress</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        function updateTable() {
+            // Mengambil data dari URL pertama
+            const apiUrl1 = 'https://sirekap-obj-data.kpu.go.id/wilayah/pemilu/ppwp/0.json';
+            // Mengambil data dari URL kedua
+            const apiUrl2 = 'https://sirekap-obj-data.kpu.go.id/pemilu/hhcw/ppwp.json';
+
+            // Menggabungkan data dari kedua sumber JSON
+            Promise.all([fetch(apiUrl1), fetch(apiUrl2)])
+                .then(responses => Promise.all(responses.map(response => response.json())))
+                .then(dataArray => {
+                    const mergedData = [].concat(...dataArray); // Menggabungkan kedua array data JSON
+
+                    // Tampilkan data dalam bentuk tabel
+                    const tableBody = document.querySelector('#pemilu-table tbody');
+                    tableBody.innerHTML = ''; // Menghapus data sebelum memasukkan yang baru
+
+                    mergedData.forEach(entry => {
+                        const row = tableBody.insertRow();
+                        const cell1 = row.insertCell(0);
+                        const cell2 = row.insertCell(1);
+                        cell1.textContent = entry.nama;
+                        cell2.textContent = entry.Progres;
+                    });
+                });
+        }
+
+        // Memperbarui tabel setiap 5 detik
+        setInterval(updateTable, 5000);
+        updateTable(); // Pertama kali memuat data
+    </script>
+</body>
+</html>

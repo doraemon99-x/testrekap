@@ -1,0 +1,18 @@
+    var data = {
+            drm: 'aHR0cHM6Ly90aXBpY29ycy5mbHkuZGV2L2h0dHBzOi8vbXJwdy5wdG1uYzAxLnZlcnNwZWN0aXZlLm5ldC8/ZGV2aWNlSWQ9TW1ZNU5EVXdZVFV0TVRCalpDMHpOR00xTFdFNU1UTXROalk0TmpVMk56RTRNR00y',
+            widevine: 'aHR0cHM6Ly9tYW5nZ2EtbGl2ZS1jZG4ubW5jbm93LmlkL2xpdmUvZWRzL1JDVEktREQvc2FfZGFzaF92bXgvUkNUSS1ERC5tcGQ=',
+        }
+
+        <div style="text-align: center;">
+            <div class="group">FIFA U-17 Replay 2023</div>
+            <hr>
+            <div class="group">
+            <div style="text-align: center;">
+                <button id="myButton" onclick="loadIframe('/ast/event')">Indonesia v Ecuador</button>
+                <button id="myButton" onclick="loadIframe('/ast/event2')">Indonesia v Panama</button>
+            </div>
+        </div>
+    </div>
+            <hr>
+
+https://veo.veobtyplayline3c.com/video4-h5.html?h5=1&url=https://hls.zfuegxs17.com/live/sd-1-4031522.m3u8?txSecret=10f41658d38f9ddaf98a63058d6dde9e&txTime=65575B61
