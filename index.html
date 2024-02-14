@@ -27,6 +27,10 @@
             color: #563ceb;
         }
 
+        #datetime {
+            color: aliceblue;
+        }
+
     </style>
     <h2>Real Count PilPres 2024</h2>
     <h2>Tingkat Nasional</h2>
@@ -102,5 +106,12 @@
         // Panggil fungsi ketika halaman dimuat
         window.onload = fetchDataAndCreateChart;
     </script>
+        <footer>
+            <p id="datetime"></p>
+            <script>
+                var dt = new Date();
+                document.getElementById("datetime").innerHTML = dt.toLocaleString();
+            </script>
+        </footer>
 </body>
 </html>
