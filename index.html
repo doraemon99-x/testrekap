@@ -17,17 +17,19 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #1a1919;
-            margin: 20px;
+            background-color: #1a1717;
+            margin: 8px;
             text-align: center;
+            
         }
 
-        h1 {
+        h2 {
             color: #563ceb;
         }
 
     </style>
-    <h1>Real Count PilPres 2024 Tingkat Nasional</h1>
+    <h2>Real Count PilPres 2024</h2>
+    <h2>Tingkat Nasional</h2>
     <canvas id="myChart" width="269" height="269" style="display: unset;box-sizing: border-box;height: 300px;width: 300px;"></canvas>
     <script>
         // Fungsi untuk mengambil data dari URL dan membuat diagram pie
@@ -39,11 +41,12 @@
             const chartData = data['chart'];
             delete chartData['persen'];  // Hapus 'persen' dari data
             const labels = Object.keys(chartData).map(key => {
-                if (key === '100025') return 'Anis';
-                if (key === '100026') return 'Prabowo';
-                if (key === '100027') return 'Ganjar';
+                if (key === '100025') return 'H. ANIES RASYID';
+                if (key === '100026') return 'H. PRABOWO SUBIANTO';
+                if (key === '100027') return 'H. GANJAR PRANOWO';
                 return key;
             });
+            
             const values = Object.values(chartData);
 
             const ctx = document.getElementById('myChart').getContext('2d');
@@ -89,7 +92,7 @@
                                 let percentage = (value*100 / sum).toFixed(2)+"%";
                                 return percentage;
                             },
-                            color: '#fff',
+                            color: '#FFCE56',
                         }
                     }
                 }
