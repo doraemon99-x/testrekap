@@ -1,37 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Pie Chart</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>3D Pie Chart</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body>
-    <canvas id="myChart" width="400" height="400"></canvas>
-    <script>
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: ['H. ANIES RASYID', 'H. PRABOWO SUBIANTO', 'H. GANJAR PRANOWO,'],
-                datasets: [{
-                    label: '# of Votes',
-                    data: [51830, 63886, 13770],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: false,
+    <div id="piechart_3d" style="width: 900px; height: 500px;"></div>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        async function drawChart() {
+            const response = await fetch('https://tipicorss.fly.dev/https://sirekap-obj-data.kpu.go.id/pemilu/hhcw/ppwp.json');
+            const data = await response.json();
+            const chartData = data['chart'];
+            delete chartData['persen'];  // Hapus 'persen' dari data
+
+            const labels = Object.keys(chartData).map(key => {
+                if (key === '100025') return 'Anis';
+                if (key === '100026') return 'Prabowo';
+                if (key === '100027') return 'Ganjar';
+                return key;
+            });
+            const values = Object.values(chartData);
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Label');
+            data.addColumn('number', 'Value');
+            for (let i = 0; i < labels.length; i++) {
+                data.addRow([labels[i], values[i]]);
             }
-        });
+
+            var options = {
+                title: 'My Daily Activities',
+                is3D: true,
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+            chart.draw(data, options);
+        }
     </script>
 </body>
 </html>
