@@ -45,7 +45,7 @@
             const chartData = data['chart'];
             delete chartData['persen'];  // Hapus 'persen' dari data
             const labels = Object.keys(chartData).map(key => {
-                if (key === '100025') return 'H. ANIES RASYID';
+                if (key === '100025') return 'H. ANIES RASYID BASWEDAN';
                 if (key === '100026') return 'H. PRABOWO SUBIANTO';
                 if (key === '100027') return 'H. GANJAR PRANOWO';
                 return key;
@@ -71,7 +71,7 @@
                             'rgba(54, 162, 235, 1)',
                             'rgba(255, 206, 86, 1)'
                         ],
-                        borderWidth: 1
+                        hoverOffset: 10
                     }]
                 },
                 options: {
