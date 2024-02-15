@@ -55,14 +55,17 @@
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'Votes',
+                        axis: 'y',
+                        label: '',
                         data: values,
+                        minBarLength: 2,
                         backgroundColor: colors,
                         borderColor: colors,
                         borderWidth: 1
                     }]
                 },
                 options: {
+                    indexAxis: 'y',
                     scales: {
                         y: {
                             beginAtZero: true
