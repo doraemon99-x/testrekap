@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chart from JSON Data</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <canvas id="myChart"></canvas>
+    <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart;
+
+        // Mapping of IDs to party names
+        var partyNames = {
+            "1": "Partai Kebangkitan Bangsa",
+"2": "Partai Gerakan Indonesia Raya",
+"3": "Partai Demokrasi Indonesia Perjuangan",
+"4": "Partai Golongan Karya",
+"5": "Partai NasDem",
+"6": "Partai Buruh",
+"7": "Partai Gelombang Rakyat Indonesia",
+"8": "Partai Keadilan Sejahtera",
+"9": "Partai Kebangkitan Nusantara",
+"10": "Partai Hati Nurani Rakyat",
+"11": "Partai Garda Republik Indonesia",
+"12": "Partai Amanat Nasional",
+"13": "Partai Bulan Bintang",
+"14": "Partai Demokrat",
+"15": "Partai Solidaritas Indonesia",
+"16": "PARTAI PERINDO",
+"17": "Partai Persatuan Pembangunan",
+"18": "Partai Nanggroe Aceh",
+"19": "Partai Generasi Atjeh Beusaboh Tha'at Dan Taqwa",
+"20": "Partai Darul Aceh",
+"21": "Partai Aceh",
+"22": "Partai Adil Sejahtera Aceh",
+"23": "PARTAI SIRA (SOLIDITAS INDEPENDEN RAKYAT ACEH)",
+"24": "Partai Ummat",
+            // Add more mappings here as needed
+        };
+
+        function updateChart(data) {
+            var labels = Object.keys(data.chart).map(id => partyNames[id] || id);
+            var values = Object.values(data.chart);
+
+            // Generate random colors for each bar
+            var colors = values.map(() => '#' + Math.floor(Math.random()*16777215).toString(16));
+
+            if (myChart) {
+                myChart.destroy(); // destroy previous chart if it exists
+            }
+
+            myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Votes',
+                        data: values,
+                        backgroundColor: colors,
+                        borderColor: colors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        fetch('https://sirekap-obj-data.kpu.go.id/pemilu/hhcd/pdpr/0.json')
+            .then(response => response.json())
+            .then(data => updateChart(data))
+            .catch(error => console.error('Error:', error));
+    </script>
+</body>
+</html>
