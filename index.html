@@ -37,36 +37,48 @@
     </style>
     <h2>Real Count PilPres 2024</h2>
     <h2>Tingkat Nasional</h2>
-    <canvas id="myChart" width="269" height="269" style="display: unset;box-sizing: border-box;height: 300px;width: 300px;"></canvas>
+    <canvas id="myChart" width="469" height="469" style="display: unset;box-sizing: border-box;height: 450px;width: 450px;"></canvas>>
+    <p id="progress"></p>
     <script>
-        // Fungsi untuk mengambil data dari URL dan membuat diagram pie
-        async function fetchDataAndCreateChart() {
-            const url = 'https://sirekap-obj-data.kpu.go.id/pemilu/hhcw/ppwp.json';
-            const response = await fetch(url);
-            const data = await response.json();
-            
-            const chartData = data['chart'];
-            delete chartData['persen'];  // Hapus 'persen' dari data
-            const labels = Object.keys(chartData).map(key => {
-                if (key === '100025') return 'H. ANIES RASYID BASWEDAN';
-                if (key === '100026') return 'H. PRABOWO SUBIANTO';
-                if (key === '100027') return 'H. GANJAR PRANOWO';
-                return key;
-            });
-            
-            const values = Object.values(chartData);
-            var progressPercentage = (data.progres.progres / data.progres.total * 100).toFixed(2);
+        fetch('https://sirekap-obj-data.kpu.go.id/pemilu/hhcw/ppwp.json')
+            .then(response => response.json())
+            .then(data => {
+                // Ubah ID '100025' menjadi 'Anis', '100026' menjadi 'Prabowo', dan '100027' menjadi 'Ganjar'
+                if (data.chart['100025']) {
+                    data.chart['H. ANIES RASYID BASWEDAN'] = data.chart['100025'];
+                    delete data.chart['100025'];
+                }
+                if (data.chart['100026']) {
+                    data.chart['H. PRABOWO SUBIANTO'] = data.chart['100026'];
+                    delete data.chart['100026'];
+                }
+                if (data.chart['100027']) {
+                    data.chart['GanjarH. GANJAR PRANOWO'] = data.chart['100027'];
+                    delete data.chart['100027'];
+                }
+
+                // Hapus properti 'persen' dari data chart
+                delete data.chart['persen'];
+
+                // Tampilkan data 'progres' dan 'total' dalam bentuk persen
+                var progressPercentage = (data.progres.progres / data.progres.total * 100).toFixed(2);
                 document.getElementById('progress').textContent = 'Progres: ' + progressPercentage + '%';
 
-            const ctx = document.getElementById('myChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Perolahan Suara',
-                        data: values,
-                        backgroundColor: [
+                // Ubah setiap data chart menjadi bentuk persen
+                var total = Object.values(data.chart).reduce((a, b) => a + b, 0);
+                var chartDataPercentage = Object.fromEntries(
+                    Object.entries(data.chart).map(([key, value]) => [key + ' (' + (value / total * 100).toFixed(2) + '%)', value])
+                );
+
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: 'pie',  // Ubah tipe grafik menjadi 'pie'
+                    data: {
+                        labels: Object.keys(chartDataPercentage),
+                        datasets: [{
+                            label: 'Data',
+                            data: Object.values(chartDataPercentage),
+                            backgroundColor: [
                             '#350269',
                             '#36A2EB',
                             '#8c0404'
@@ -77,9 +89,9 @@
                             '#8c0404'
                         ],
                         hoverOffset: 10
-                    }]
-                },
-                options: {
+                        }]
+                    },
+                    options: {
                     responsive: false,
                     plugins: {
                     legend: {
@@ -93,19 +105,17 @@
         }
     }
 })
-        };
-
-
-        // Panggil fungsi ketika halaman dimuat
-        window.onload = fetchDataAndCreateChart;
-    </script>
-        <footer>
-            <p id="progress"></p>
-            <p id="datetime"></p>
-            <script>
-                var dt = new Date();
-                document.getElementById("datetime").innerHTML = dt.toLocaleString();
-            </script>
-        </footer>
+        })
+            // Panggil fungsi ketika halaman dimuat
+            window.onload = fetchDataAndCreateChart;
+        </script>
+            <footer>
+                <p id="progress"></p>
+                <p id="datetime"></p>
+                <script>
+                    var dt = new Date();
+                    document.getElementById("datetime").innerHTML = dt.toLocaleString();
+                </script>
+            </footer>
 </body>
 </html>
