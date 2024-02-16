@@ -72,46 +72,39 @@
                 var chartLabels = Object.keys(data.chart);
                 var chartData = Object.values(data.chart);
                 var chartUrl = 'https://quickchart.io/chart?c=' + encodeURIComponent(JSON.stringify({
-                    type: 'pie',
+                    type: 'outlabeledPie',
                     data: {
                         labels: chartLabels,
-                        datasets: [
-                          {
+                        datasets: [{
                             data: chartData,
-                            backgroundColor: ["#FF3784", "#36A2EB", "#4BC0C0"],
-                          },
-                      ],
+                            backgroundColor: [
+                            "#FF3784", "#36A2EB", "#4BC0C0"
+                            ],
+                            borderWidth: 1
+                        }]
                     },
                     options: {
-    rotation: 90,
     plugins: {
-      imageLabels: {
-        images: [
-          {
-            url: 'https://cdn3.iconfinder.com/data/icons/142-mini-country-flags-16x16px/32/flag-germany2x.png',
-            width: 25,
-            height: 25,
-            offsetX: -50,
-            offsetY: 5,
-          },
-          {
-            url: 'https://cdn3.iconfinder.com/data/icons/142-mini-country-flags-16x16px/32/flag-france2x.png',
-            width: 25,
-            height: 25,
-            offsetY: -35,
-          },
-          {
-            url: 'https://cdn3.iconfinder.com/data/icons/142-mini-country-flags-16x16px/32/flag-spain2x.png',
-            width: 25,
-            height: 25,
-          },
-        ],
-      },
-    },
-  },
+      legend: false,
+      outlabels: {
+        text: "%l %p",
+        color: "white",
+        stretch: 35,
+        font: {
+          resizable: true,
+          minSize: 18,
+          maxSize: 38
+        }
+      }
+    }
+  }
 }
-))
-})
+));
+
+                // Tampilkan gambar QuickChart
+                document.getElementById('myChart').src = chartUrl;
+            })
+            .catch(error => console.error('Error:', error));
           </script>
             <footer>
                 <p id="progress"></p>
