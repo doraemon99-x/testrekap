@@ -43,7 +43,7 @@
         fetch('https://sirekap-obj-data.kpu.go.id/pemilu/hhcw/ppwp/33.json')
             .then(response => response.json())
             .then(data => {
-                // Ubah ID '100025' menjadi 'Anis', '100026' menjadi 'Prabowo', dan '100027' menjadi 'Ganjar'
+                
                 if (data.chart['100025']) {
                     data.chart['H. ANIES RASYID BASWEDAN'] = data.chart['100025'];
                     delete data.chart['100025'];
@@ -57,10 +57,10 @@
                     delete data.chart['100027'];
                 }
 
-                // Hapus properti 'persen' dari data chart
+                
                 delete data.chart['persen'];
 
-                // Tampilkan data 'progres' dan 'total' dalam bentuk persen
+                
                 var progressPercentage = (data.progres.progres / data.progres.total * 100).toFixed(2);
                 document.getElementById('progress').textContent = 'Suara Masuk: ' + progressPercentage + '%';
 
