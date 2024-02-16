@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
     <title>Real Count PilPres 2024</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" type="text/css" href="./style.css">
+    <link rel="stylesheet" type="text/css" href="/style.css">
 </head>
 <body>
     <nav>
@@ -36,11 +36,11 @@
         
     </style>
     <h2>Real Count PilPres 2024</h2>
-    <h2>Tingkat Nasional</h2>
+    <h2>Provinsi ACEH</h2>
     <canvas id="myChart" width="439" height="439" style="display: unset;box-sizing: border-box;height: 350px;width: 350px;"></canvas>>
     <p id="progress"></p>
     <script>
-        fetch('https://sirekap-obj-data.kpu.go.id/pemilu/hhcw/ppwp.json')
+        fetch('https://sirekap-obj-data.kpu.go.id/pemilu/hhcw/ppwp/11.json')
             .then(response => response.json())
             .then(data => {
                 // Ubah ID '100025' menjadi 'Anis', '100026' menjadi 'Prabowo', dan '100027' menjadi 'Ganjar'
@@ -112,12 +112,6 @@
             <footer>
                 <p id="progress"></p>
                 <p id="datetime"></p>
-                <button id="myButton" onclick="window.open('/prov/aceh')">ACEH</button>
-                <button id="myButton" onclick="window.open('/prov/sumut')">SUMUT</button>
-                <button id="myButton" onclick="window.open('/prov/sumbar')">SUMBAR</button>
-                <button id="myButton" onclick="window.open('/prov/riau')">RIAU</button>
-                <button id="myButton" onclick="window.open('/prov/jateng')">JATENG</button>
-                <button id="myButton" onclick="window.open('/prov/jabar')">JABAR</button>
                 <script>
                     var dt = new Date();
                     document.getElementById("datetime").innerHTML = dt.toLocaleString();
