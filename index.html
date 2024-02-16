@@ -62,7 +62,7 @@
 
                 // Tampilkan data 'progres' dan 'total' dalam bentuk persen
                 var progressPercentage = (data.progres.progres / data.progres.total * 100).toFixed(2);
-                document.getElementById('progress').textContent = 'Progres: ' + progressPercentage + '%';
+                document.getElementById('progress').textContent = 'Suara Masuk: ' + progressPercentage + '%';
 
                 // Ubah setiap data chart menjadi bentuk persen
                 var total = Object.values(data.chart).reduce((a, b) => a + b, 0);
@@ -76,7 +76,7 @@
                     data: {
                         labels: Object.keys(chartDataPercentage),
                         datasets: [{
-                            label: 'Data',
+                            label: 'Perolahan Suara',
                             data: Object.values(chartDataPercentage),
                             backgroundColor: [
                             '#350269',
