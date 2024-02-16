@@ -30,7 +30,10 @@
         #datetime {
             color: aliceblue;
         }
-
+        #progress {
+            color: aliceblue;
+        }
+        
     </style>
     <h2>Real Count PilPres 2024</h2>
     <h2>Tingkat Nasional</h2>
@@ -52,6 +55,8 @@
             });
             
             const values = Object.values(chartData);
+            var progressPercentage = (data.progres.progres / data.progres.total * 100).toFixed(2);
+                document.getElementById('progress').textContent = 'Progres: ' + progressPercentage + '%';
 
             const ctx = document.getElementById('myChart').getContext('2d');
             new Chart(ctx, {
@@ -95,6 +100,7 @@
         window.onload = fetchDataAndCreateChart;
     </script>
         <footer>
+            <p id="progress"></p>
             <p id="datetime"></p>
             <script>
                 var dt = new Date();
