@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta content='IE=edge' http-equiv='X-UA-Compatible'/>
+    <meta name="robots" content="noindex">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <title>Real Count PilPres 2024</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <a href="#"><img src="https://i.postimg.cc/7hBXqptn/tipion.png" alt="Logo"></a>
+        </div>
+    </nav>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1717;
+            margin: 8px;
+            text-align: center;
+            
+        }
+
+        h2 {
+            color: #cab705;
+        }
+
+        #datetime {
+            color: aliceblue;
+        }
+        #progress {
+            color: aliceblue;
+        }
+        
+    </style>
+    <h2>Real Count PilPres 2024</h2>
+    <h2>Kecamatan Rimba Melintang</h2>
+    <canvas id="myChart" width="439" height="439" style="display: unset;box-sizing: border-box;height: 350px;width: 350px;"></canvas>>
+    <p id="progress"></p>
+    <script>
+        fetch('https://sirekap-obj-data.kpu.go.id/pemilu/hhcw/ppwp/14/1407/140704.json')
+            .then(response => response.json())
+            .then(data => {
+                // Ubah ID '100025' menjadi 'Anis', '100026' menjadi 'Prabowo', dan '100027' menjadi 'Ganjar'
+                if (data.chart['100025']) {
+                    data.chart['H. ANIES RASYID BASWEDAN'] = data.chart['100025'];
+                    delete data.chart['100025'];
+                }
+                if (data.chart['100026']) {
+                    data.chart['H. PRABOWO SUBIANTO'] = data.chart['100026'];
+                    delete data.chart['100026'];
+                }
+                if (data.chart['100027']) {
+                    data.chart['H. GANJAR PRANOWO'] = data.chart['100027'];
+                    delete data.chart['100027'];
+                }
+
+                // Hapus properti 'persen' dari data chart
+                delete data.chart['persen'];
+
+                // Tampilkan data 'progres' dan 'total' dalam bentuk persen
+                var progressPercentage = (data.progres.progres / data.progres.total * 100).toFixed(2);
+                document.getElementById('progress').textContent = 'Suara Masuk: ' + progressPercentage + '%';
+
+                // Ubah setiap data chart menjadi bentuk persen
+                var total = Object.values(data.chart).reduce((a, b) => a + b, 0);
+                var chartDataPercentage = Object.fromEntries(
+                    Object.entries(data.chart).map(([key, value]) => [key + ' (' + (value / total * 100).toFixed(2) + '%)', value])
+                );
+
+                var ctx = document.getElementById('myChart').getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: 'pie',  // Ubah tipe grafik menjadi 'pie'
+                    data: {
+                        labels: Object.keys(chartDataPercentage),
+                        datasets: [{
+                            label: 'Perolahan Suara',
+                            data: Object.values(chartDataPercentage),
+                            backgroundColor: [
+                            '#350269',
+                            '#36A2EB',
+                            '#8c0404'
+                        ],
+                        borderColor: [
+                            '#350269',
+                            '#36A2EB',
+                            '#8c0404'
+                        ],
+                        hoverOffset: 10
+                        }]
+                    },
+                    options: {
+                    responsive: false,
+                    plugins: {
+                    legend: {
+                labels: {
+                    color: 'rgb(240, 248, 255)',
+                    font: {
+                        size: 14
+                    }
+                }
+            }
+        }
+    }
+})
+        })
+            // Panggil fungsi ketika halaman dimuat
+            window.onload = fetchDataAndCreateChart;
+        </script>
+            <footer>
+                <p id="progress"></p>
+                <p id="datetime"></p>
+                <script>
+                    var dt = new Date();
+                    document.getElementById("datetime").innerHTML = dt.toLocaleString();
+                </script>
+            </footer>
+</body>
+</html>
