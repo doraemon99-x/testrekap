@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pilkada 2024</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 20px;
+        }
+        .table-container {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">Pilkada 2024</h1>
+        <div class="row">
+            <div class="col-md-4">
+                <h2>Pilih Provinsi</h2>
+                <select id="provinsi-dropdown" class="form-select mb-4">
+                    <option value="" selected>Pilih provinsi...</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <h2>Pilih Kabupaten</h2>
+                <select id="kabupaten-dropdown" class="form-select mb-4" disabled>
+                    <option value="" selected>Pilih kabupaten...</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <h2>Pilih Kecamatan</h2>
+                <select id="kecamatan-dropdown" class="form-select mb-4" disabled>
+                    <option value="" selected>Pilih kecamatan...</option>
+                </select>
+            </div>
+        </div>
+        <div class="table-container">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nomor Urut</th>
+                        <th>Nama Paslon</th>
+                        <th>Suara</th>
+                        <th>Persen</th>
+                    </tr>
+                </thead>
+                <tbody id="paslon-table">
+                    <tr><td colspan="4" class="text-center">Memuat data...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const wilayahUrl = "https://sirekappilkada-obj-data.kpu.go.id/wilayah/pilkada/pkwkp/0.json";
+        const kabupatenBaseUrl = "https://sirekappilkada-obj-data.kpu.go.id/wilayah/pilkada/pkwkp/";
+        const kecamatanBaseUrl = "https://sirekappilkada-obj-data.kpu.go.id/wilayah/pilkada/pkwkp/";
+        const paslonUrl = "https://sirekappilkada-obj-data.kpu.go.id/pilkada/paslon/pkwkp.json";
+
+        async function fetchWilayah() {
+            const response = await fetch(wilayahUrl);
+            const data = await response.json();
+            const dropdown = document.getElementById("provinsi-dropdown");
+
+            data.forEach(provinsi => {
+                const option = document.createElement("option");
+                option.value = provinsi.kode;
+                option.textContent = provinsi.nama;
+                dropdown.appendChild(option);
+            });
+        }
+
+        async function fetchKabupaten(provinsiKode) {
+            const kabupatenUrl = `${kabupatenBaseUrl}${provinsiKode}.json`;
+            const response = await fetch(kabupatenUrl);
+            const data = await response.json();
+            const dropdown = document.getElementById("kabupaten-dropdown");
+
+            dropdown.innerHTML = `<option value="" selected>Pilih kabupaten...</option>`;
+
+            data.forEach(kabupaten => {
+                const option = document.createElement("option");
+                option.value = kabupaten.kode;
+                option.textContent = kabupaten.nama;
+                dropdown.appendChild(option);
+            });
+
+            dropdown.disabled = false;
+        }
+
+        async function fetchKecamatan(provinsiKode, kabupatenKode) {
+            const kecamatanUrl = `${kecamatanBaseUrl}${provinsiKode}/${kabupatenKode}.json`;
+            const response = await fetch(kecamatanUrl);
+            const data = await response.json();
+            const dropdown = document.getElementById("kecamatan-dropdown");
+
+            dropdown.innerHTML = `<option value="" selected>Pilih kecamatan...</option>`;
+
+            data.forEach(kecamatan => {
+                const option = document.createElement("option");
+                option.value = kecamatan.kode;
+                option.textContent = kecamatan.nama;
+                dropdown.appendChild(option);
+            });
+
+            dropdown.disabled = false;
+        }
+
+        async function fetchPaslonData() {
+            const response = await fetch(paslonUrl);
+            const data = await response.json();
+            return data; // Mengembalikan data paslon
+        }
+
+        async function fetchSuara(provinsiKode, kabupatenKode = "", kecamatanKode = "") {
+    let suaraUrl;
+
+    if (kecamatanKode) {
+        suaraUrl = `https://sirekappilkada-obj-data.kpu.go.id/pilkada/hhcw/pkwkp/${provinsiKode}/${kabupatenKode}/${kecamatanKode}.json`;
+    } else if (kabupatenKode) {
+        suaraUrl = `https://sirekappilkada-obj-data.kpu.go.id/pilkada/hhcw/pkwkp/${provinsiKode}/${kabupatenKode}.json`;
+    } else {
+        suaraUrl = `https://sirekappilkada-obj-data.kpu.go.id/pilkada/hhcw/pkwkp/${provinsiKode}.json`;
+    }
+
+    const response = await fetch(suaraUrl);
+    const data = await response.json();
+    const tableBody = document.getElementById("paslon-table");
+
+    if (data.tungsura) {
+        const chartData = data.tungsura.chart;
+        const totalSuara = Object.values(chartData).reduce((sum, suara) => sum + suara, 0);
+        tableBody.innerHTML = ""; // Clear previous data
+
+        // Loop through chartData to generate table rows
+        Object.keys(chartData).forEach(paslonId => {
+            const suara = chartData[paslonId];
+            const persen = ((suara / totalSuara) * 100).toFixed(2);
+            const row = `
+                <tr>
+                    <td>${paslonId}</td>
+                    <td>Paslon ${paslonId}</td> <!-- Replace with actual name if available -->
+                    <td>${suara}</td>
+                    <td>${persen}%</td>
+                </tr>
+            `;
+            tableBody.innerHTML += row;
+        });
+    } else {
+        tableBody.innerHTML = `<tr><td colspan="4" class="text-center">Tidak ada data suara.</td></tr>`;
+    }
+}
+
+
+        document.getElementById("provinsi-dropdown").addEventListener("change", async (event) => {
+            const provinsiKode = event.target.value;
+            if (provinsiKode) {
+                await fetchKabupaten(provinsiKode);
+                fetchSuara(provinsiKode);
+            }
+        });
+
+        document.getElementById("kabupaten-dropdown").addEventListener("change", async (event) => {
+            const kabupatenKode = event.target.value;
+            const provinsiKode = document.getElementById("provinsi-dropdown").value;
+            if (kabupatenKode) {
+                await fetchKecamatan(provinsiKode, kabupatenKode);
+                fetchSuara(provinsiKode, kabupatenKode);
+            }
+        });
+
+        document.getElementById("kecamatan-dropdown").addEventListener("change", async (event) => {
+            const kecamatanKode = event.target.value;
+            const provinsiKode = document.getElementById("provinsi-dropdown").value;
+            const kabupatenKode = document.getElementById("kabupaten-dropdown").value;
+            if (kecamatanKode) {
+                fetchSuara(provinsiKode, kabupatenKode, kecamatanKode);
+            }
+        });
+
+        fetchWilayah();
+    </script>
+</body>
+</html>
