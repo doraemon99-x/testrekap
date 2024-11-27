@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <title>Real Count Pilkada</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1717;
+            margin: 0;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #343a40;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        .logo img {
+            height: 50px;
+        }
+
+        h2 {
+            color: #563ceb;
+            margin: 20px 0;
+        }
+
+        p {
+            color: rgb(240, 248, 255);
+            margin: 5px 0;
+        }
+
+        canvas {
+            display: block;
+            margin: 0 auto;
+        }
+
+        footer {
+            background-color: #343a40;
+            padding: 10px 0;
+            margin-top: 20px;
+        }
+
+        footer p {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <a href="#"><img src="https://i.postimg.cc/7hBXqptn/tipion.png" alt="Logo"></a>
+        </div>
+    </nav>
+
+    <!-- Content -->
+    <h2>Real Count Pilkada</h2>
+    <p>Tingkat Kabupaten</p>
+    <p id="progress-info"></p>
+    <canvas id="realCountChart" width="300" height="300"></canvas>
+
+    <!-- Footer -->
+    <footer>
+        <p id="datetime"></p>
+    </footer>
+
+    <script>
+        // Fungsi untuk mengambil data dari API dan menampilkan diagram pie
+        async function fetchAndDisplayData() {
+            const url = 'https://sirekappilkada-obj-data.kpu.go.id/pilkada/hhcw/pkwkk/14/1407.json';
+            
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error('Gagal mengambil data');
+                const data = await response.json();
+
+                // Ekstrak data
+                const chartData = data.tungsura.chart;
+                const totalTPS = chartData.progres.total;
+                const tpsMasuk = chartData.progres.progres;
+                const persenMasuk = chartData.progres.persen;
+
+                // Update progres informasi
+                document.getElementById('progress-info').textContent = 
+                    `Progres: ${persenMasuk}% (TPS Masuk: ${tpsMasuk} dari ${totalTPS})`;
+
+                // Data Paslon
+                const labels = ['Afrizal Sintong-Setiawan', 'H Bistamam-Jhony Charles'];
+                const values = [chartData['1000350'], chartData['1000351']];
+                const colors = ['#36A2EB', '#FF6384'];
+
+                // Buat Chart
+                const ctx = document.getElementById('realCountChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: values,
+                            backgroundColor: colors
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: 'rgb(240, 248, 255)'
+                                }
+                            }
+                        }
+                    }
+                });
+            } catch (error) {
+                console.error(error);
+                alert('Gagal memuat data. Silakan coba lagi.');
+            }
+        }
+
+        // Tampilkan tanggal dan waktu
+        function displayDateTime() {
+            const now = new Date();
+            document.getElementById('datetime').textContent = now.toLocaleString();
+        }
+
+        // Jalankan fungsi saat halaman dimuat
+        window.onload = () => {
+            fetchAndDisplayData();
+            displayDateTime();
+        };
+    </script>
+</body>
+</html>
